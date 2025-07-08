@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,10 +7,11 @@ import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { ArrowLeft, LogOut, Eye, Check, X, Filter, Search, User, Mail, Phone, Calendar, Video } from "lucide-react";
+import { ArrowLeft, LogOut, Eye, Check, X, Filter, Search, User, Mail, Phone, Calendar, Video, Download, MessageCircle } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/lib/supabase";
 import { useToast } from "@/hooks/use-toast";
+import * as XLSX from 'xlsx';
 
 const Admin = () => {
   const [user, setUser] = useState<any>(null);
@@ -204,6 +204,105 @@ const Admin = () => {
     }
   };
 
+  const exportToExcel = () => {
+    try {
+      // Prepare data for export
+      const exportData = filteredRegistrations.map(reg => ({
+        'Name': reg.name,
+        'Email': reg.email,
+        'Mobile': reg.mobile,
+        'Age': reg.age,
+        'Gender': reg.gender,
+        'Address': reg.address,
+        'School/College': reg.school_college,
+        'Teacher': reg.teacher_name,
+        'Dance Type': reg.dance_type,
+        'Age Group': reg.age_group,
+        'Theme': reg.theme,
+        'Category': reg.category,
+        'Status': reg.audition_status,
+        'Admin Notes': reg.admin_notes || '',
+        'Registration Date': new Date(reg.created_at).toLocaleDateString('en-IN'),
+        'Participant 1': reg.participant1_name || '',
+        'Participant 2': reg.participant2_name || '',
+        'Group Members': reg.group_members ? reg.group_members.join(', ') : '',
+        'Amount': reg.amount
+      }));
+
+      // Create workbook and worksheet
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.json_to_sheet(exportData);
+
+      // Set column widths
+      const colWidths = [
+        { wch: 20 }, // Name
+        { wch: 25 }, // Email
+        { wch: 15 }, // Mobile
+        { wch: 8 },  // Age
+        { wch: 10 }, // Gender
+        { wch: 30 }, // Address
+        { wch: 25 }, // School/College
+        { wch: 20 }, // Teacher
+        { wch: 12 }, // Dance Type
+        { wch: 12 }, // Age Group
+        { wch: 15 }, // Theme
+        { wch: 20 }, // Category
+        { wch: 15 }, // Status
+        { wch: 30 }, // Admin Notes
+        { wch: 15 }, // Registration Date
+        { wch: 20 }, // Participant 1
+        { wch: 20 }, // Participant 2
+        { wch: 40 }, // Group Members
+        { wch: 10 }  // Amount
+      ];
+      ws['!cols'] = colWidths;
+
+      // Add worksheet to workbook
+      XLSX.utils.book_append_sheet(wb, ws, 'Registrations');
+
+      // Generate filename with current date
+      const filename = `IndependDANCE_Registrations_${new Date().toISOString().split('T')[0]}.xlsx`;
+
+      // Save file
+      XLSX.writeFile(wb, filename);
+
+      toast({
+        title: "Export Successful",
+        description: `${filteredRegistrations.length} registrations exported to Excel!`,
+      });
+    } catch (error) {
+      console.error('Export error:', error);
+      toast({
+        title: "Export Failed",
+        description: "Failed to export data to Excel.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const sendWhatsAppMessage = (registration: any) => {
+    const message = `🎉 Congratulations ${registration.name}! 
+
+Your registration for IndepeDANCE has been APPROVED! ✅
+
+Details:
+📧 Email: ${registration.email}
+🕺 Dance Type: ${registration.dance_type}
+🎯 Category: ${registration.category}
+🎭 Theme: ${registration.theme}
+👥 Age Group: ${registration.age_group}
+
+Next round details will be shared soon. Stay tuned!
+
+Best regards,
+IndepeDANCE Team`;
+
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/91${registration.mobile}?text=${encodedMessage}`;
+    
+    window.open(whatsappUrl, '_blank');
+  };
+
   if (!user || !isAdmin) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-green-50 flex items-center justify-center px-4">
@@ -264,6 +363,10 @@ const Admin = () => {
             <p className="text-muted-foreground">Manage IndepeDANCE registrations</p>
           </div>
           <div className="flex items-center gap-4">
+            <Button onClick={exportToExcel} variant="outline" size="sm" className="bg-green-50 hover:bg-green-100">
+              <Download className="w-4 h-4 mr-2" />
+              Export to Excel
+            </Button>
             <span className="text-sm text-muted-foreground">Welcome, {user.email}</span>
             <Button onClick={logout} variant="outline" size="sm">
               <LogOut className="w-4 h-4 mr-2" />
@@ -444,14 +547,27 @@ const Admin = () => {
                         {new Date(registration.created_at).toLocaleDateString('en-IN')}
                       </TableCell>
                       <TableCell>
-                        <Button
-                          onClick={() => setSelectedRegistration(registration)}
-                          size="sm"
-                          variant="outline"
-                        >
-                          <Eye className="w-4 h-4 mr-2" />
-                          View
-                        </Button>
+                        <div className="flex items-center gap-2">
+                          <Button
+                            onClick={() => setSelectedRegistration(registration)}
+                            size="sm"
+                            variant="outline"
+                          >
+                            <Eye className="w-4 h-4 mr-2" />
+                            View
+                          </Button>
+                          {registration.audition_status === 'approved' && (
+                            <Button
+                              onClick={() => sendWhatsAppMessage(registration)}
+                              size="sm"
+                              variant="outline"
+                              className="bg-green-50 hover:bg-green-100"
+                            >
+                              <MessageCircle className="w-4 h-4 mr-2" />
+                              WhatsApp
+                            </Button>
+                          )}
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}
