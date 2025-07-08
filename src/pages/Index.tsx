@@ -36,6 +36,28 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-green-50">
+      {/* Header with Logo */}
+      <header className="bg-white/80 backdrop-blur-sm border-b border-orange-200/50 sticky top-0 z-50">
+        <div className="container mx-auto px-4 py-3 flex justify-between items-center">
+          <div className="flex items-center space-x-4">
+            <img 
+              src="/lovable-uploads/51e2a358-8853-4747-9669-b650bce85248.png" 
+              alt="NPA Nashik Performing Arts" 
+              className="h-12 w-auto"
+            />
+          </div>
+          <nav className="hidden md:flex items-center space-x-6">
+            <Link to="/register" className="text-blue-900 hover:text-orange-500 font-medium transition-colors">Register</Link>
+            <Link to="/status" className="text-blue-900 hover:text-orange-500 font-medium transition-colors">Check Status</Link>
+            <Link to="/rules" className="text-blue-900 hover:text-orange-500 font-medium transition-colors">Rules</Link>
+            <Link to="/admin" className="text-blue-900 hover:text-orange-500 font-medium transition-colors">Admin</Link>
+          </nav>
+          <div className="md:hidden">
+            <Badge className="bg-orange-500 text-white">IndepeDANCE</Badge>
+          </div>
+        </div>
+      </header>
+
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-r from-orange-400 via-white to-green-500 py-20 px-4">
         <div className="absolute inset-0 bg-gradient-to-r from-orange-400/20 via-transparent to-green-500/20"></div>
