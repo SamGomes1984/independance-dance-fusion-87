@@ -45,19 +45,20 @@ const PersonalInfoStep = ({ formData, updateFormData, onNext }: PersonalInfoStep
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="grid md:grid-cols-2 gap-6">
+    <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+      {/* Mobile: Stack cards vertically, Desktop: 2 columns */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         {/* Personal Details */}
-        <Card className="border-orange-200">
-          <CardContent className="p-6">
-            <div className="flex items-center mb-4">
-              <User className="w-5 h-5 text-orange-500 mr-2" />
-              <h3 className="text-lg font-semibold text-gray-800">Personal Details</h3>
+        <Card className="border-orange-200 order-1">
+          <CardContent className="p-4 sm:p-6">
+            <div className="flex items-center mb-3 sm:mb-4">
+              <User className="w-4 h-4 sm:w-5 sm:h-5 text-orange-500 mr-2" />
+              <h3 className="text-base sm:text-lg font-semibold text-gray-800">Personal Details</h3>
             </div>
             
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               <div>
-                <Label htmlFor="name" className="text-sm font-medium text-gray-700">
+                <Label htmlFor="name" className="text-sm font-medium text-gray-700 block mb-1">
                   Full Name *
                 </Label>
                 <Input
@@ -65,15 +66,15 @@ const PersonalInfoStep = ({ formData, updateFormData, onNext }: PersonalInfoStep
                   type="text"
                   value={formData.name}
                   onChange={(e) => updateFormData({ name: e.target.value })}
-                  className="mt-1"
+                  className="h-11 sm:h-10 text-base sm:text-sm"
                   placeholder="Enter your full name"
                   required
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-3 sm:gap-4">
                 <div>
-                  <Label htmlFor="dateOfBirth" className="text-sm font-medium text-gray-700">
+                  <Label htmlFor="dateOfBirth" className="text-sm font-medium text-gray-700 block mb-1">
                     Date of Birth *
                   </Label>
                   <Input
@@ -81,12 +82,12 @@ const PersonalInfoStep = ({ formData, updateFormData, onNext }: PersonalInfoStep
                     type="date"
                     value={formData.dateOfBirth}
                     onChange={(e) => updateFormData({ dateOfBirth: e.target.value })}
-                    className="mt-1"
+                    className="h-11 sm:h-10 text-base sm:text-sm"
                     required
                   />
                 </div>
                 <div>
-                  <Label htmlFor="age" className="text-sm font-medium text-gray-700">
+                  <Label htmlFor="age" className="text-sm font-medium text-gray-700 block mb-1">
                     Age
                   </Label>
                   <Input
@@ -94,21 +95,21 @@ const PersonalInfoStep = ({ formData, updateFormData, onNext }: PersonalInfoStep
                     type="number"
                     value={formData.age}
                     readOnly
-                    className="mt-1 bg-gray-50"
+                    className="h-11 sm:h-10 text-base sm:text-sm bg-gray-50"
                     placeholder="Auto-calculated"
                   />
                 </div>
               </div>
 
               <div>
-                <Label htmlFor="gender" className="text-sm font-medium text-gray-700">
+                <Label htmlFor="gender" className="text-sm font-medium text-gray-700 block mb-1">
                   Gender *
                 </Label>
                 <Select value={formData.gender} onValueChange={(value) => updateFormData({ gender: value })}>
-                  <SelectTrigger className="mt-1">
+                  <SelectTrigger className="h-11 sm:h-10 text-base sm:text-sm">
                     <SelectValue placeholder="Select gender" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="z-50">
                     <SelectItem value="male">Male</SelectItem>
                     <SelectItem value="female">Female</SelectItem>
                     <SelectItem value="other">Other</SelectItem>
@@ -120,16 +121,16 @@ const PersonalInfoStep = ({ formData, updateFormData, onNext }: PersonalInfoStep
         </Card>
 
         {/* Contact Information */}
-        <Card className="border-green-200">
-          <CardContent className="p-6">
-            <div className="flex items-center mb-4">
-              <Phone className="w-5 h-5 text-green-500 mr-2" />
-              <h3 className="text-lg font-semibold text-gray-800">Contact Information</h3>
+        <Card className="border-green-200 order-2">
+          <CardContent className="p-4 sm:p-6">
+            <div className="flex items-center mb-3 sm:mb-4">
+              <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 mr-2" />
+              <h3 className="text-base sm:text-lg font-semibold text-gray-800">Contact Information</h3>
             </div>
             
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               <div>
-                <Label htmlFor="mobile" className="text-sm font-medium text-gray-700">
+                <Label htmlFor="mobile" className="text-sm font-medium text-gray-700 block mb-1">
                   Mobile Number *
                 </Label>
                 <Input
@@ -137,14 +138,14 @@ const PersonalInfoStep = ({ formData, updateFormData, onNext }: PersonalInfoStep
                   type="tel"
                   value={formData.mobile}
                   onChange={(e) => updateFormData({ mobile: e.target.value })}
-                  className="mt-1"
+                  className="h-11 sm:h-10 text-base sm:text-sm"
                   placeholder="+91 12345 67890"
                   required
                 />
               </div>
 
               <div>
-                <Label htmlFor="alternateMobile" className="text-sm font-medium text-gray-700">
+                <Label htmlFor="alternateMobile" className="text-sm font-medium text-gray-700 block mb-1">
                   Alternate Mobile
                 </Label>
                 <Input
@@ -152,13 +153,13 @@ const PersonalInfoStep = ({ formData, updateFormData, onNext }: PersonalInfoStep
                   type="tel"
                   value={formData.alternateMobile}
                   onChange={(e) => updateFormData({ alternateMobile: e.target.value })}
-                  className="mt-1"
+                  className="h-11 sm:h-10 text-base sm:text-sm"
                   placeholder="+91 12345 67890 (optional)"
                 />
               </div>
 
               <div>
-                <Label htmlFor="email" className="text-sm font-medium text-gray-700">
+                <Label htmlFor="email" className="text-sm font-medium text-gray-700 block mb-1">
                   Email Address *
                 </Label>
                 <Input
@@ -166,7 +167,7 @@ const PersonalInfoStep = ({ formData, updateFormData, onNext }: PersonalInfoStep
                   type="email"
                   value={formData.email}
                   onChange={(e) => updateFormData({ email: e.target.value })}
-                  className="mt-1"
+                  className="h-11 sm:h-10 text-base sm:text-sm"
                   placeholder="your.email@example.com"
                   required
                 />
@@ -176,23 +177,23 @@ const PersonalInfoStep = ({ formData, updateFormData, onNext }: PersonalInfoStep
         </Card>
       </div>
 
-      {/* Address */}
+      {/* Address - Full width */}
       <Card className="border-blue-200">
-        <CardContent className="p-6">
-          <div className="flex items-center mb-4">
-            <MapPin className="w-5 h-5 text-blue-500 mr-2" />
-            <h3 className="text-lg font-semibold text-gray-800">Address</h3>
+        <CardContent className="p-4 sm:p-6">
+          <div className="flex items-center mb-3 sm:mb-4">
+            <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500 mr-2" />
+            <h3 className="text-base sm:text-lg font-semibold text-gray-800">Address</h3>
           </div>
           
           <div>
-            <Label htmlFor="address" className="text-sm font-medium text-gray-700">
+            <Label htmlFor="address" className="text-sm font-medium text-gray-700 block mb-1">
               Complete Address *
             </Label>
             <Textarea
               id="address"
               value={formData.address}
               onChange={(e) => updateFormData({ address: e.target.value })}
-              className="mt-1"
+              className="min-h-[80px] sm:min-h-[60px] text-base sm:text-sm"
               placeholder="Enter your complete address including city, state, and pincode"
               rows={3}
               required
@@ -201,17 +202,17 @@ const PersonalInfoStep = ({ formData, updateFormData, onNext }: PersonalInfoStep
         </CardContent>
       </Card>
 
-      {/* Educational Information */}
+      {/* Educational Information - Full width */}
       <Card className="border-purple-200">
-        <CardContent className="p-6">
-          <div className="flex items-center mb-4">
-            <GraduationCap className="w-5 h-5 text-purple-500 mr-2" />
-            <h3 className="text-lg font-semibold text-gray-800">Educational & Dance Information</h3>
+        <CardContent className="p-4 sm:p-6">
+          <div className="flex items-center mb-3 sm:mb-4">
+            <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5 text-purple-500 mr-2" />
+            <h3 className="text-base sm:text-lg font-semibold text-gray-800">Educational & Dance Information</h3>
           </div>
           
-          <div className="grid md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <div>
-              <Label htmlFor="schoolCollege" className="text-sm font-medium text-gray-700">
+              <Label htmlFor="schoolCollege" className="text-sm font-medium text-gray-700 block mb-1">
                 School/College Name *
               </Label>
               <Input
@@ -219,13 +220,13 @@ const PersonalInfoStep = ({ formData, updateFormData, onNext }: PersonalInfoStep
                 type="text"
                 value={formData.schoolCollege}
                 onChange={(e) => updateFormData({ schoolCollege: e.target.value })}
-                className="mt-1"
+                className="h-11 sm:h-10 text-base sm:text-sm"
                 placeholder="Enter your school or college name"
                 required
               />
             </div>
             <div>
-              <Label htmlFor="teacherName" className="text-sm font-medium text-gray-700">
+              <Label htmlFor="teacherName" className="text-sm font-medium text-gray-700 block mb-1">
                 Dance Teacher's Name
               </Label>
               <Input
@@ -233,7 +234,7 @@ const PersonalInfoStep = ({ formData, updateFormData, onNext }: PersonalInfoStep
                 type="text"
                 value={formData.teacherName}
                 onChange={(e) => updateFormData({ teacherName: e.target.value })}
-                className="mt-1"
+                className="h-11 sm:h-10 text-base sm:text-sm"
                 placeholder="Enter your dance teacher's name (optional)"
               />
             </div>
@@ -241,15 +242,15 @@ const PersonalInfoStep = ({ formData, updateFormData, onNext }: PersonalInfoStep
         </CardContent>
       </Card>
 
-      {/* Submit Button */}
-      <div className="flex justify-end">
+      {/* Submit Button - Mobile optimized */}
+      <div className="flex justify-center sm:justify-end pt-2">
         <Button 
           type="submit"
           size="lg"
-          className="bg-gradient-to-r from-orange-500 to-green-600 hover:from-orange-600 hover:to-green-700 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+          className="w-full sm:w-auto bg-gradient-to-r from-orange-500 to-green-600 hover:from-orange-600 hover:to-green-700 text-white px-6 sm:px-8 py-3 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 h-12 sm:h-auto text-base sm:text-sm font-medium"
         >
           Continue to Category & Video
-          <ArrowRight className="ml-2 w-5 h-5" />
+          <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
         </Button>
       </div>
     </form>
